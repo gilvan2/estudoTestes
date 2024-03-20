@@ -1,0 +1,5 @@
+/// <reference types="cypress" /> -> Auxilia o VS Code no auto complete
+it -> Define o escopo de um teste
+decribr -> Agrupa testes ou outros agrupamentos de testes
+.skip -> Propriedade que permite desconsiderar um teste. Pode ser feito para um teste isoladamente quanto apra um grupo. Pode ser chamado em vários locais ao mesmo tempo
+.only -> Determina quem será executado. Esta propriedade percorre todo o arquivo e executa a linha onde essa propriedade foi chamada pela ultima vez. Pode ser usado em um teste isoladamente quanto em um agrupamento 
