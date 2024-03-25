@@ -14,4 +14,12 @@ describe('Basico do cypress',()=>{
             //TODO imprimir o log no console
             //TODO escrever o site em um campo texto
     })
+
+    it('Encontrar e interagir com um elemento',()=>{
+        cy.visit('https://wcaquino.me/cypress/componentes.html')
+
+        cy.get('#buttonSimple')
+            .click()
+            .should('have.value','Obrigado!')
+    })
 })
