@@ -1,14 +1,17 @@
 /// <reference types="cypress" />
 
 describe('Trabalhando com elementos básicos',()=>{
-    it('Textos',()=>{
+    beforeEach(()=>{
         cy.visit('https://wcaquino.me/cypress/componentes.html')
+    })
+
+    it('Textos',()=>{
+        
         cy.get('span').should('contain','Cuidado onde clica, ')//Uma classe css(tag)
         cy.get('.facilAchar').should('have.text','Cuidado onde clica, muitas armadilhas...')//Uma classe -> busca exatamente o elemento
     })
 
     it('Links',()=>{
-        cy.visit('https://wcaquino.me/cypress/componentes.html')
         cy.get('[href="#"]').click()
         cy.get('#resultado').should('have.text','Voltou!')
 
@@ -16,8 +19,6 @@ describe('Trabalhando com elementos básicos',()=>{
         cy.get('#resultado').should('have.not.text','Voltou!')
         cy.contains('Voltar').click()
         cy.get('#resultado').should('have.text','Voltou!')
-
-
 
     })
 })
