@@ -54,7 +54,7 @@ describe('Trabalhando com elementos básicos',()=>{
         cy.get("[name='formSexo']").should('have.length',2) //Busca por
     })
 
-    it.only('Checkbox', ()=>{
+    it('Checkbox', ()=>{
         cy.get('#formComidaPizza')
             .click()
             .should('be.checked')
@@ -66,6 +66,15 @@ describe('Trabalhando com elementos básicos',()=>{
 
         cy.get('#formComidaVegetariana').should('be.checked')
 
+    })
 
+    it.only('Combo',()=>{
+        cy.get('[data-test="dataEscolaridade"]')
+            .select('2o grau completo')
+            .should('have.value','2graucomp')
+
+        cy.get('[data-test="dataEscolaridade"]')
+            .select('1graucomp')
+            .should('have.value','1graucomp')
     })
 })
