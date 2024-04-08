@@ -80,7 +80,7 @@ describe('Trabalhando com elementos básicos',()=>{
         //TODO Validar as opções do combo
     })
 
-    it.only('Combo multiplo', ()=>{
+    it('Combo multiplo', ()=>{
         cy.get('[data-testid="dataEsportes"]')
             .select(['natacao','Corrida','nada'])
 
