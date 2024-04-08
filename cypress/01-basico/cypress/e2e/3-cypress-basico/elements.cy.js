@@ -68,7 +68,7 @@ describe('Trabalhando com elementos básicos',()=>{
 
     })
 
-    it.only('Combo',()=>{
+    it('Combo',()=>{
         cy.get('[data-test="dataEscolaridade"]')
             .select('2o grau completo')
             .should('have.value','2graucomp')
@@ -76,5 +76,14 @@ describe('Trabalhando com elementos básicos',()=>{
         cy.get('[data-test="dataEscolaridade"]')
             .select('1graucomp')
             .should('have.value','1graucomp')
+
+        //TODO Validar as opções do combo
+    })
+
+    it.only('Combo multiplo', ()=>{
+        cy.get('[data-testid="dataEsportes"]')
+            .select(['natacao','Corrida','nada'])
+
+        //TODO Validar opções selecionadas do combo multiplo
     })
 })
