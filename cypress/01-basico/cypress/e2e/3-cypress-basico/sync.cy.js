@@ -36,9 +36,10 @@ describe('Esperas e sincronizações',()=>{
         cy.get('#buttonListDOM').click()
         cy.get('#lista li span',{timeout: 3000})//Usando o timeout, vc seta o máximo que pode esperar para dar o erro, mas avança se a condição for satisfeita
             .should('contain','Item 2')
-        
 
     })
+    //Comando de click não usa retry 
+    //Comandos que alteram o html não são retentados
 
     
     }

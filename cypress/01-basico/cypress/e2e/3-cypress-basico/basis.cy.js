@@ -11,8 +11,10 @@ describe('Basico do cypress',()=>{
             .should('be.equal','Campo de Treinamento')
             .and('contain','Campo')
 
-            //TODO imprimir o log no console
-            //TODO escrever o site em um campo texto
+            cy.title().then(title =>{
+                console.log(title)
+            })
+
     })
 
     it('Encontrar e interagir com um elemento',()=>{
