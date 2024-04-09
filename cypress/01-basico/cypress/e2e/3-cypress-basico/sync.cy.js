@@ -11,5 +11,21 @@ describe('Esperas e sincronizações',()=>{
         cy.get('#novoCampo').should('exist')
         cy.get('#novoCampo').type('funciona')
     })
+
+    it.only('Usando o find para buscas compostas',()=>{
+
+        cy.get('#buttonList').click()
+        cy.get('#lista li')
+            .find('span')
+            .should('contain','Item 1')
+        cy.get('#lista li')
+            .find('span')
+            .should('contain','Item 2')
+
+            cy.get('#lista li span')//Caso o cypress se perca no contexto, deixar o find e usar a chamada completa do elemento
+            .should('contain','Item 2')
+    })
+
+    
     }
 )
