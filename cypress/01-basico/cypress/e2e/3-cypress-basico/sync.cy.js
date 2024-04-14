@@ -41,6 +41,12 @@ describe('Esperas e sincronizações',()=>{
     //Comando de click não usa retry 
     //Comandos que alteram o html não são retentados
 
-    
+    it('Should vs Then',()=>{
+//Then espera terminar a execução, shoud não, faz retrys consecutivos
+//Se precisar fazer novas pesquisas aninhadas, use then        
+        cy.get('#buttonListDOM').click()
+        cy.get('#lista li span').then()
+        
+    })
     }
 )
