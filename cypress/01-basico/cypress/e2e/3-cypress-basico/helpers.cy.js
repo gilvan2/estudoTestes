@@ -57,5 +57,23 @@ describe('Helpers...',()=>{
         cy.title().its('length').should('be.equal', 20)      
     })
 
+    it.only('Invoke...',()=>{
+        const getValue = ()=> 1;
+        const soma = (a ,b)=> a + b;
+
+        cy.wrap({fn: getValue}).invoke('fn').should('be.equal',1)
+        cy.wrap({fn: soma}).invoke('fn',2,5).should('be.equal',7)
+
+        cy.visit('https://wcaquino.me/cypress/componentes.html')
+        cy.get('#formNome').invoke('val','Texto via invoke')
+        //O invoque consegue usar funções javascript/jquery dentro do cypress - Não faz o contrário
+
+        cy.window().invoke('alert','Dá pra ver?')//O cypress matou o alert para não atrapalhar o fluxo, mas existe o registro no console do evento
+
+        cy.get('#resultado')
+            .invoke('html', '<input type="button", value="hached!"/>')
+        //Nosse momento, o invoke foi capaz de criar um botão no momento de execução do teste
+    })
+
 
 })
