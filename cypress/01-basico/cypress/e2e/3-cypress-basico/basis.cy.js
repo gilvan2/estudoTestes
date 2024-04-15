@@ -11,9 +11,23 @@ describe('Basico do cypress',()=>{
             .should('be.equal','Campo de Treinamento')
             .and('contain','Campo')
 
-            cy.title().then(title =>{
-                console.log(title)
-            })
+        let syncTile
+
+        cy.title().then(title => {
+            console.log(title)
+
+            cy.get('#formNome').type(title)
+
+            syncTile = title
+        })
+
+        cy.get('[data-cy="dataSobrenome"]').then($el =>{
+            $el.val=syncTile
+        })
+
+        cy.get('#elementosForm\\:sugestoes').then($el =>{//Não esquecer de colocar o segundo \ para escapar do :
+            cy.wrap($el).type(syncTile)
+        })
 
     })
 
