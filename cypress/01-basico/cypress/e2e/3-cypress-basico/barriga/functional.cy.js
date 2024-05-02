@@ -14,9 +14,13 @@ describe('Testanado em nível funcional',()=>{
         cy.get('.toast').should('contain','Bem vindo')
     })
 
-    it('...',()=>{
+    it('Deve cadastrar uma conta',()=>{
 
-        
+        cy.get('[data-test=menu-settings]').click()
+        cy.get('[href="/contas"]').click()
+        cy.get('[data-test="nome"]').type('Conta de testes')
+        cy.get('button.btn').click()
+        cy.get('.toast').should('contain','Conta inserida com sucesso')
     })
 
 })
