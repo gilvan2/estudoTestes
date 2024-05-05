@@ -4,15 +4,14 @@ import loc from '../../../support/locators'
 
 describe('Testanado em nível funcional',()=>{
     beforeEach(()=>{
-        
-        cy.visit('https://barrigareact.wcaquino.me/')
-        cy.get(loc.LOGIN.USER).type('gilvan.silva.junior@gmail.com')
-        cy.get(loc.LOGIN.PASSWORD).type('Fisi123c@')
-        cy.get(loc.LOGIN.BTN_LOGIN).click()
-        cy.get(loc.MESSAGE).should('contain','Bem vindo')
+
+        cy.login('gilvan.silva.junior@gmail.com','Fisi123c@')
+
     })
 
     it('Deve cadastrar uma conta',()=>{
+
+        cy.resetApp()
 
         cy.get(loc.MENU.SETTINGS).click()
         cy.get(loc.MENU.CONTAS).click()
