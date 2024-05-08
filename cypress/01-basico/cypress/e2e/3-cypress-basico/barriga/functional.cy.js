@@ -29,4 +29,12 @@ describe('Testanado em nível funcional',()=>{
         cy.get(loc.MESSAGE).should('contain','Conta atualizada com sucesso')
 
     })
+
+    it('não deve inserir conta com nome repetido',()=>{
+        cy.acessarMenuConta()
+        cy.acessarMenuConta()
+        cy.inserirConta('Conta de testes alterada')
+        cy.get(loc.MESSAGE).should('contain','code 400')
+    })
+
 })
