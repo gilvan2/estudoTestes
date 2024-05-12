@@ -39,6 +39,16 @@ describe('Testanado em nível funcional',()=>{
 
     it('Deve cadastrar uma movimentação', ()=>{
 
+        let movimentacoesNoExtrato;
+        cy.get(loc.MENU.EXTRATO).click()
+
+        cy.get('.list-group')
+        .find('li')
+        .its('length')
+        .then((length) => {
+            movimentacoesNoExtrato = length 
+        });
+
         cy.get(loc.MENU.MOVIMENTACAO).click()
 
         cy.get(loc.MOVIMENTACAO.DESCRICAO).type('Descrição')
@@ -46,6 +56,24 @@ describe('Testanado em nível funcional',()=>{
         cy.get(loc.MOVIMENTACAO.INTERESSADO).type('interessado')
         cy.get(loc.MOVIMENTACAO.BTN_SALVAR).click()
         cy.get(loc.MESSAGE).should('contain','Movimentação inserida com sucesso!')
+
+        //Garante que foi adicionada uma movimentação desde o inicio do processo
+        cy.get('.list-group')
+        .find('li')
+        .its('length')
+        .then((length) => {
+            expect(movimentacoesNoExtrato + 1 ).to.be.equal(length);
+        });
+
+        //Garante que no extrato irá encontar alguma movimentação com os valores solicitados de descrição e valor
+        cy.get('.list-group') 
+        .contains('li', 'Descrição') 
+        .should('have.descendants', 'span') 
+        .contains('span', 'Descrição') 
+        .parent() 
+        .find('small') 
+        .contains('123'); 
     })
+    //Remover saldo inserido 
 
 })

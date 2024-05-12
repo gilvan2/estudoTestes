@@ -8,7 +8,8 @@ const locators = {
         SETTINGS: '[data-test=menu-settings]',
         CONTAS: '[href="/contas"]',
         RESETAR: '[href="/reset"]',
-        MOVIMENTACAO: '[data-test="menu-movimentacao"]'
+        MOVIMENTACAO: '[data-test="menu-movimentacao"]',
+        EXTRATO: '[data-test="menu-extrato"]'
     },
     CONTA: {
         NOME: '[data-test="nome"]',
