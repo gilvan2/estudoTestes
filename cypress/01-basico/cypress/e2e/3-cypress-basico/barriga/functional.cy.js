@@ -74,6 +74,33 @@ describe('Testanado em nível funcional',()=>{
         .find('small') 
         .contains('123'); 
     })
-    //Remover saldo inserido 
 
+    it("Deve remover a movimentação inserida",()=>{
+
+        let movimentacoesNoExtrato;
+        cy.get(loc.MENU.EXTRATO).click()
+
+        cy.get('.list-group')
+        .find('li')
+        .its('length')
+        .then((length) => {
+            movimentacoesNoExtrato = length 
+        });
+
+        cy.get('.list-group-item')
+        .contains('span', 'Descrição')
+        .parent()
+        .parent()
+        .parent()
+        .find('.far.fa-trash-alt')
+        .click()
+
+        //Garante que foi removida uma movimentação desde o inicio do processo      
+        cy.get('.list-group')
+        .find('li')
+        .its('length')
+        .then((length) => {
+            expect(movimentacoesNoExtrato ).to.be.equal(length);
+        });
+    })
 })
