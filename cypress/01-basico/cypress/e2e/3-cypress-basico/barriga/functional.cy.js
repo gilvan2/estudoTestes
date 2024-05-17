@@ -6,7 +6,7 @@ import '../../../support/commandsContas'
 describe('Testanado em nível funcional',()=>{
     
     beforeEach(()=>{
-        cy.login('gilvan.silva.junior@gmail.com','Fisi123c@')
+        cy.login('gilvan.silva@gmail.com','Mate123matic@')
         cy.resetApp()
     })
 
