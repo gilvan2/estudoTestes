@@ -3,8 +3,6 @@
 describe('Testanado em nível funcional',()=>{
     
     beforeEach(()=>{
-        //cy.login('gilvan.silva.junior@gmail.com','Fisi123c@')
-        //cy.resetApp()
     })
 
     it('Deve cadastrar uma conta',()=>{
@@ -18,6 +16,16 @@ describe('Testanado em nível funcional',()=>{
             }
         //}).then(res => console.log(res)) -> Para ver o que veio da requisição
         }).its('body.token').should('not.be.empty')
+        .then(token =>{
+            cy.request({
+                method: 'POST',
+                url: 'https://barrigarest.wcaquino.me/contas',
+                headers: {Authorization: `JWT ${token}`},
+                body: {
+                    nome: "Conta via rest"
+                }
+            }).then(res => console.log(res))
+        })
     })
 
     it('Deve alterar uma conta', ()=>{
