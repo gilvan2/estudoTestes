@@ -22,9 +22,16 @@ describe('Testanado em nível funcional',()=>{
                 url: 'https://barrigarest.wcaquino.me/contas',
                 headers: {Authorization: `JWT ${token}`},
                 body: {
-                    nome: "Conta via rest"
+                    nome: 'Conta via rest'
                 }
-            }).then(res => console.log(res))
+            }).as('resposta')
+            //}).then(res => console.log(res))
+        })
+
+        cy.get('@resposta').then(res =>{
+            expect(res.status).to.be.equal(201)
+            expect(res.body).to.have.property('id')
+            expect(res.body).to.have.property('nome', 'Conta via rest')
         })
     })
 
