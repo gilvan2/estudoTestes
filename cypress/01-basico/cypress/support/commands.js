@@ -57,3 +57,14 @@ Cypress.Commands.add('getToken',(user, passwd)=>{
     })
 })
 
+Cypress.Commands.add('resetRest',()=>{
+    cy.getToken('gilvan.silva@gmail.com','Mate123matic@')
+    .then(token =>{
+        cy.request({
+            method: 'GET',
+            url: 'https://barrigarest.wcaquino.me/reset',
+            headers: {Authorization: `JWT ${token}`}
+        }).its('status').should('be.equal',200)
+    })
+})
+

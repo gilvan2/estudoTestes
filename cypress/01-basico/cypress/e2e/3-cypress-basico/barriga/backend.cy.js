@@ -8,6 +8,8 @@ describe('Testanado em nível funcional',()=>{
             token = tkn
         })
 
+        cy.resetRest(token);
+
     })
     beforeEach(()=>{
     })
