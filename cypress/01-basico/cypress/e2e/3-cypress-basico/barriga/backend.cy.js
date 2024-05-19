@@ -53,13 +53,26 @@ describe('Testanado em nível funcional',()=>{
             })
         }).as('resposta').its('status').should('be.equal',200)
 
-        cy.get('@resposta')
         /*Caso não exista uma forma de se obter o id, pode se por exemplo pesquisar os id disponíveis 
         e fazer um filtro do valor desejado */
         //TODO implementar teste buscando a lista de ID's disponíveis
     })
 
-    it('não deve inserir conta com nome repetido',()=>{
+    it('não deve inserir conta com nome repetido via rest',()=>{
+        cy.request({
+            url: 'https://barrigarest.wcaquino.me/contas',
+            method: 'POST',
+            headers: {Authorization: `JWT ${token}`},
+            body: {
+                nome: "Conta mesmo nome"
+            },
+            failOnStatusCode: false
+        }).as('resposta')
+
+        cy.get('@resposta').then(res =>{
+            expect(res.status).to.be.equal(400)
+            expect(res.body.error).to.be.contain('Já existe uma conta com esse nome!')          
+        })
     })
 
     it('Deve cadastrar uma movimentação', ()=>{
