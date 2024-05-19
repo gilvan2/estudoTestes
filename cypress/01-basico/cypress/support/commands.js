@@ -56,7 +56,8 @@ Cypress.Commands.add('getToken',(user, passwd)=>{
         return token
     })
 })
-
+//TODO - Ajustar para o cypress não precisar declatar a url totalmente, somente os recursos acessados () baseUrl )
+//TODO - Ajustar resetToken para receber o token ao invés de fazer a requisição pelo getToken
 Cypress.Commands.add('resetRest',()=>{
     cy.getToken('gilvan.silva@gmail.com','Mate123matic@')
     .then(token =>{
