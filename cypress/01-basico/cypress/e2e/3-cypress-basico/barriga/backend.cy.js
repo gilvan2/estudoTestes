@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import dayjs from "dayjs"
 
 describe('Testanado em nível funcional',()=>{
     let token 
@@ -34,17 +35,10 @@ describe('Testanado em nível funcional',()=>{
 
     it('Deve alterar uma conta via rest', ()=>{
         //Caso exista uma forma de buscar o id, pode ser feita uma implementação parecida com essa
-        cy.request({
-            url: 'https://barrigarest.wcaquino.me/contas',
-            method: 'GET',
-            headers: {Authorization: `JWT ${token}`},
-            qs:{
-                nome: 'Conta para alterar'
-            }
-        //}).then(res => console.log(res))
-        }).then(res => {
+        cy.getContaByName('Conta para alterar')
+        .then(contaId => {
             cy.request({
-                url: `https://barrigarest.wcaquino.me/contas/${res.body[0].id}`,
+                url: `https://barrigarest.wcaquino.me/contas/${contaId}`,
                 method: 'PUT',
                 headers: {Authorization: `JWT ${token}`},
                 body: {
@@ -75,7 +69,27 @@ describe('Testanado em nível funcional',()=>{
         })
     })
 
-    it('Deve cadastrar uma movimentação', ()=>{
+    it('Deve cadastrar uma movimentação via rest', ()=>{
+        cy.getContaByName('Conta para movimentacoes')
+            .then(contaId => {
+                cy.request({
+                    method: 'POST',
+                    url: 'https://barrigarest.wcaquino.me/transacoes',
+                     headers: { Authorization: `JWT ${token}` },
+                    body: {
+                        conta_id: contaId,
+                        data_pagamento: dayjs().add(1, 'day').format('DD/MM/YYYY'),
+                        data_transacao: dayjs().format('DD/MM/YYYY'),
+                        descricao: "desc",
+                        envolvido: "inter",
+                        status: true,
+                        tipo: "REC",
+                        valor: "123",
+                    }
+                }).as('response')
+            })
+        cy.get('@response').its('status').should('be.equal', 201)
+        cy.get('@response').its('body.id').should('exist')
     })
 
     it("Deve remover a movimentação inserida",()=>{

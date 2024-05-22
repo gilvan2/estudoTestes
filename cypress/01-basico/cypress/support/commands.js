@@ -69,3 +69,19 @@ Cypress.Commands.add('resetRest',()=>{
     })
 })
 
+Cypress.Commands.add('getContaByName', (name )=>{
+    
+    cy.getToken('gilvan.silva@gmail.com','Mate123matic@').then(token =>{
+            cy.request({
+                url: 'https://barrigarest.wcaquino.me/contas',
+                method: 'GET',
+                headers: {Authorization: `JWT ${token}`},
+                qs:{
+                    nome: name
+                }
+            }).then(res => {
+                return res.body[0].id
+        })
+    })
+})
+
