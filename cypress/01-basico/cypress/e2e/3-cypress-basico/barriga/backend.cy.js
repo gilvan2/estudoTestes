@@ -92,66 +92,54 @@ describe('Testanado em nível funcional',()=>{
         cy.get('@response').its('body.id').should('exist')
     })
 
-    it("Deve validar extrato via rest",()=>{
-       //Valida saldo inicial 
+    it('Deve validar extrato via rest', () => {
         cy.request({
-        url: 'https://barrigarest.wcaquino.me/saldo',
-        method: 'GET',
-        headers: { Authorization: `JWT ${token}` },
-
-       }).then(res => {
+            url: 'https://barrigarest.wcaquino.me/saldo',
+            method: 'GET',
+            headers: { Authorization: `JWT ${token}` }
+        }).then(res => {
             let saldoConta = null
-            res.body.forEach(c =>{
-                if(c.conta === 'Conta para saldo'){
-                    saldoConta = c.saldo
-                }
+            res.body.forEach(c => {
+                if (c.conta === 'Conta para saldo') saldoConta = c.saldo
             })
             expect(saldoConta).to.be.equal('534.00')
-       })
-
-       //Realizando realizando uma transação
-       cy.request({
-        url:'https://barrigarest.wcaquino.me/transacoes',
-        method: 'GET',
-        qd: {descricao: 'Movimentacao 1, calculo saldo'},
-        headers: { Authorization: `JWT ${token}` }
-       }).then(res => {
-        console.log(res)
-        let iec
-        res.body.forEach(c =>{
-            if(c.descricao === 'Movimentacao 1, calculo saldo'){
-                iec = c.id
-            }
         })
+
         cy.request({
-            url: `https://barrigarest.wcaquino.me/transacoes/${iec}`,
-            method: 'PUT',
+            method: 'GET',
+            url: 'https://barrigarest.wcaquino.me/transacoes',
             headers: { Authorization: `JWT ${token}` },
-            body: {
-                status: true,
-                data_transacao: dayjs(res.body[0].data_transacao).format('DD/MM/YYYY'),
-                data_pagamento: dayjs(res.body[0].data_pagamento).format('DD/MM/YYYY'),
-                descricao: res.body[0].descricao,
-                envolvido: res.body[0].envolvido,
-                valor: res.body[0].valor,
-                conta_id: res.body[0].conta_id
-            }
-        }).its('status').should('be.equal', 200)
-    })
-//Validando se o valor da transação foi adiconado
-    cy.request({
-        url: 'https://barrigarest.wcaquino.me/saldo',
-        method: 'GET',
-        headers: { Authorization: `JWT ${token}` },
-
-    }).then(res => {
-        let saldoConta = null
-        res.body.forEach(c => {
-            if (c.conta === 'Conta para saldo') saldoConta = c.saldo
+            qs: { descricao: 'Movimentacao 1, calculo saldo' }
+        }).then(res => {
+            console.log(res.body[0])
+            cy.request({
+                url: `https://barrigarest.wcaquino.me/transacoes/${res.body[0].id}`,
+                method: 'PUT',
+                headers: { Authorization: `JWT ${token}` },
+                body: {
+                    status: true,
+                    data_transacao: dayjs(res.body[0].data_transacao).format('DD/MM/YYYY'),
+                    data_pagamento: dayjs(res.body[0].data_pagamento).format('DD/MM/YYYY'),
+                    descricao: res.body[0].descricao,
+                    envolvido: res.body[0].envolvido,
+                    valor: res.body[0].valor,
+                    conta_id: res.body[0].conta_id
+                }
+            }).its('status').should('be.equal', 200)
         })
-        expect(saldoConta).to.be.equal('4034.00')
+
+        cy.request({
+            url: 'https://barrigarest.wcaquino.me/saldo',
+            method: 'GET',
+            headers: { Authorization: `JWT ${token}` }
+        }).then(res => {
+            let saldoConta = null
+            res.body.forEach(c => {
+                if (c.conta === 'Conta para saldo') saldoConta = c.saldo
+            })
+            expect(saldoConta).to.be.equal('4034.00')
+        })
     })
-})
 
     it("Deve remover a movimentação inserida  via rest",()=>{
     })
