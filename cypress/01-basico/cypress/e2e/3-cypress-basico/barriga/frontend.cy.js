@@ -53,11 +53,37 @@ describe('Testanado em nível funcional',()=>{
         ]
         ).as('saldo')
         cy.login('gilvan.silva@gmail.com','senhaerrada@')
-        cy.resetApp()
+        //cy.resetApp()
     })
 
-    it('Deve cadastrar uma conta',()=>{
+    it.only('Deve cadastrar uma conta',()=>{
+        cy.intercept({
+            method: 'GET',
+            url: 'https://barrigarest.wcaquino.me/contas'
+        },[
+            {id: 1, nome: 'Carteira', visivel: true, usuario_id: 1},
+            {id: 2, nome: 'Banco', visivel: true, usuario_id: 1}
+        ]
+        ).as('contas')
+
+        cy.intercept({
+            method: 'POST',
+            url: 'https://barrigarest.wcaquino.me/contas'
+        },
+        {id: 3, nome:'Conta de testes', visivel: true, usuario_id: 1}
+        ).as('salvarContas')
+        
         cy.acessarMenuConta()
+
+        cy.intercept({
+            method: 'GET',
+            url: 'https://barrigarest.wcaquino.me/contas'
+        },[
+            {id: 1, nome: 'Carteira', visivel: true, usuario_id: 1},
+            {id: 2, nome: 'Banco', visivel: true, usuario_id: 1},
+            {id: 3, nome:'Conta de testes', visivel: true, usuario_id: 1}
+        ]
+        ).as('contasSalvas')
         cy.inserirConta('Conta de testes')
         cy.get(loc.MESSAGE).should('contain','Conta inserida com sucesso')
     })
