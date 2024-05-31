@@ -62,6 +62,10 @@ describe('Testanado em nível funcional',()=>{
         cy.get(loc.MESSAGE).should('contain','Conta inserida com sucesso')
     })
 
+    after(()=>{
+        cy.clearLocalStorage //Ou qualquer outro tipo de clear, depende da necessidade
+    })
+
     it('Deve alterar uma conta', ()=>{
         cy.acessarMenuConta()
         cy.contains('tr', 'Conta para alterar')
