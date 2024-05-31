@@ -56,7 +56,7 @@ describe('Testanado em nível funcional',()=>{
         //cy.resetApp()
     })
 
-    it.only('Deve cadastrar uma conta',()=>{
+    it('Deve cadastrar uma conta',()=>{
         cy.intercept({
             method: 'GET',
             url: 'https://barrigarest.wcaquino.me/contas'
@@ -92,9 +92,25 @@ describe('Testanado em nível funcional',()=>{
         cy.clearLocalStorage //Ou qualquer outro tipo de clear, depende da necessidade
     })
 
-    it('Deve alterar uma conta', ()=>{
+    it.only('Deve alterar uma conta', ()=>{
+        cy.intercept({
+            method: 'GET',
+            url: 'https://barrigarest.wcaquino.me/contas'
+        },[
+            {id: 1, nome: 'Carteira', visivel: true, usuario_id: 1},
+            {id: 2, nome: 'Banco', visivel: true, usuario_id: 1},
+            
+        ]
+        ).as('contas')
+
+        cy.intercept({
+            method: 'PUT',
+            url: 'https://barrigarest.wcaquino.me/contas/**'
+        },{id: 2, nome: 'Conta para alterar alterada', visivel: true, usuario_id: 1}
+        )
+        
         cy.acessarMenuConta()
-        cy.contains('tr', 'Conta para alterar')
+        cy.contains('tr', 'Banco')
         .find(loc.CONTA.LOCATOR_BTN_ALTERAR)
         .click()
         cy.get(loc.CONTA.NOME).clear().type('Conta para alterar alterada')
