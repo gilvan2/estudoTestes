@@ -2,14 +2,14 @@
 import dayjs from "dayjs"
 
 describe('Testanado em nível funcional',()=>{
-    let token 
+    //let token 
     before(()=>{
         cy.getToken('gilvan.silva@gmail.com','Mate123matic@')
-        .then(tkn =>{
-            token = tkn
-        })
+        //.then(tkn =>{
+        //    token = tkn
+        //})
 
-        cy.resetRest(token);
+        cy.resetRest();
 
     })
     beforeEach(()=>{
@@ -20,7 +20,7 @@ describe('Testanado em nível funcional',()=>{
         cy.request({
             method: 'POST',
             url: 'https://barrigarest.wcaquino.me/contas',
-            headers: {Authorization: `JWT ${token}`},
+            //headers: {Authorization: `JWT ${token}`},
             body: {
                 nome: 'Conta via rest'
             }
@@ -40,7 +40,7 @@ describe('Testanado em nível funcional',()=>{
             cy.request({
                 url: `https://barrigarest.wcaquino.me/contas/${contaId}`,
                 method: 'PUT',
-                headers: {Authorization: `JWT ${token}`},
+                //headers: {Authorization: `JWT ${token}`},
                 body: {
                     "nome": "Conta alterada via rest"
                 }
@@ -56,7 +56,7 @@ describe('Testanado em nível funcional',()=>{
         cy.request({
             url: 'https://barrigarest.wcaquino.me/contas',
             method: 'POST',
-            headers: {Authorization: `JWT ${token}`},
+            //headers: {Authorization: `JWT ${token}`},
             body: {
                 nome: "Conta mesmo nome"
             },
@@ -75,7 +75,7 @@ describe('Testanado em nível funcional',()=>{
                 cy.request({
                     method: 'POST',
                     url: 'https://barrigarest.wcaquino.me/transacoes',
-                    headers: { Authorization: `JWT ${token}` },
+                    //headers: { Authorization: `JWT ${token}` },
                     body: {
                         conta_id: contaId,
                         data_pagamento: dayjs().add(1, 'day').format('DD/MM/YYYY'),
@@ -96,7 +96,7 @@ describe('Testanado em nível funcional',()=>{
         cy.request({
             url: 'https://barrigarest.wcaquino.me/saldo',
             method: 'GET',
-            headers: { Authorization: `JWT ${token}` }
+            //headers: { Authorization: `JWT ${token}` }
         }).then(res => {
             let saldoConta = null
             res.body.forEach(c => {
@@ -108,14 +108,14 @@ describe('Testanado em nível funcional',()=>{
         cy.request({
             method: 'GET',
             url: 'https://barrigarest.wcaquino.me/transacoes',
-            headers: { Authorization: `JWT ${token}` },
+            //headers: { Authorization: `JWT ${token}` },
             qs: { descricao: 'Movimentacao 1, calculo saldo' }
         }).then(res => {
             console.log(res.body[0])
             cy.request({
                 url: `https://barrigarest.wcaquino.me/transacoes/${res.body[0].id}`,
                 method: 'PUT',
-                headers: { Authorization: `JWT ${token}` },
+                //headers: { Authorization: `JWT ${token}` },
                 body: {
                     status: true,
                     data_transacao: dayjs(res.body[0].data_transacao).format('DD/MM/YYYY'),
@@ -131,7 +131,7 @@ describe('Testanado em nível funcional',()=>{
         cy.request({
             url: 'https://barrigarest.wcaquino.me/saldo',
             method: 'GET',
-            headers: { Authorization: `JWT ${token}` }
+            //headers: { Authorization: `JWT ${token}` }
         }).then(res => {
             let saldoConta = null
             res.body.forEach(c => {
@@ -145,13 +145,13 @@ describe('Testanado em nível funcional',()=>{
         cy.request({
             method: 'GET',
             url: 'https://barrigarest.wcaquino.me/transacoes',
-             headers: { Authorization: `JWT ${token}` },
+             //headers: { Authorization: `JWT ${token}` },
             qs: { descricao: 'Movimentacao para exclusao' }
         }).then(res => {
             cy.request({
                 url: `https://barrigarest.wcaquino.me/transacoes/${res.body[0].id}`,
                 method: 'DELETE',
-                 headers: { Authorization: `JWT ${token}` },
+                 //headers: { Authorization: `JWT ${token}` },
             }).its('status').should('be.equal', 204)
         })
     })

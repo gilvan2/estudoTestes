@@ -53,6 +53,7 @@ Cypress.Commands.add('getToken',(user, passwd)=>{
     //}).then(res => console.log(res)) -> Para ver o que veio da requisição
     }).its('body.token').should('not.be.empty')
     .then(token =>{
+        Cypress.env('token', token)
         return token
     })
 })
@@ -83,5 +84,16 @@ Cypress.Commands.add('getContaByName', (name )=>{
                 return res.body[0].id
         })
     })
+})
+//Essa alteração permite sobrescrever o request para não precisar usar o token
+Cypress.Commands.overwrite('request', (originalFn, ...options) =>{
+    if (options.length ===1){
+        if (Cypress.env('token')){
+            options[0].headers = {
+                Authorization: `JWT ${Cypress.env('token')}`
+            }
+        }
+    }
+    return originalFn(...options)
 })
 
