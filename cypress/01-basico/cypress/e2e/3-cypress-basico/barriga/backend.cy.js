@@ -142,5 +142,17 @@ describe('Testanado em nível funcional',()=>{
     })
 
     it("Deve remover a movimentação inserida  via rest",()=>{
+        cy.request({
+            method: 'GET',
+            url: 'https://barrigarest.wcaquino.me/transacoes',
+             headers: { Authorization: `JWT ${token}` },
+            qs: { descricao: 'Movimentacao para exclusao' }
+        }).then(res => {
+            cy.request({
+                url: `https://barrigarest.wcaquino.me/transacoes/${res.body[0].id}`,
+                method: 'DELETE',
+                 headers: { Authorization: `JWT ${token}` },
+            }).its('status').should('be.equal', 204)
+        })
     })
 })
