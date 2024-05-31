@@ -2,70 +2,19 @@
 
 import loc from '../../../support/locators'
 import '../../../support/commandsContas'
+import buildEnv from '../../../support/buildEnv'
 
 describe('Testanado em nível funcional',()=>{
     
     beforeEach(()=>{
-        //cy.server() e cy.route até versão 12, da versão 13 em diante usar cy.intercept 
-        /*
-        cy.server()
 
-        cy.route({
-            method: 'POST',
-            url: 'https://barrigarest.wcaquino.me/signin',
-            response: {
-                id: 99999,
-                nome: "Usuário Falso",
-                token: "Uma string muit, muito, muito longa que não deveria ser aceita, mas é"
-            }
-        }).as('sigin')
-
-        cy.route({
-            method: 'GET',
-            url:'https://barrigarest.wcaquino.me/saldo',
-            response:[
-                {
-                    conta_id: 999,
-                    conta: "Carteira",
-                    saldo: "100.00"},
-                {
-                    conta_id: 99909,
-                    conta: "Banco",
-                    saldo: "10000000.00"
-                }
-            ]
-        }).as('saldo')        
-        */
-        cy.intercept({
-            method: 'POST',
-            url: 'https://barrigarest.wcaquino.me/signin'
-        },
-        {id: 99999, nome: "Usuário Falso", token: "Uma string muit, muito, muito longa que não deveria ser aceita, mas é"}
-        ).as('sigin')
-
-        cy.intercept({
-            method: 'GET',
-            url:'https://barrigarest.wcaquino.me/saldo'
-        },
-        [
-            {conta_id: 999, conta: "Carteira", saldo: "100.00"},
-            {conta_id: 99909, conta: "Banco", saldo: "10000000.00"}
-        ]
-        ).as('saldo')
+        buildEnv()
         cy.login('gilvan.silva@gmail.com','senhaerrada@')
         //cy.resetApp()
     })
 
     it('Deve cadastrar uma conta',()=>{
-        cy.intercept({
-            method: 'GET',
-            url: 'https://barrigarest.wcaquino.me/contas'
-        },[
-            {id: 1, nome: 'Carteira', visivel: true, usuario_id: 1},
-            {id: 2, nome: 'Banco', visivel: true, usuario_id: 1}
-        ]
-        ).as('contas')
-
+        
         cy.intercept({
             method: 'POST',
             url: 'https://barrigarest.wcaquino.me/contas'
@@ -92,17 +41,7 @@ describe('Testanado em nível funcional',()=>{
         cy.clearLocalStorage //Ou qualquer outro tipo de clear, depende da necessidade
     })
 
-    it.only('Deve alterar uma conta', ()=>{
-        cy.intercept({
-            method: 'GET',
-            url: 'https://barrigarest.wcaquino.me/contas'
-        },[
-            {id: 1, nome: 'Carteira', visivel: true, usuario_id: 1},
-            {id: 2, nome: 'Banco', visivel: true, usuario_id: 1},
-            
-        ]
-        ).as('contas')
-
+    it('Deve alterar uma conta', ()=>{
         cy.intercept({
             method: 'PUT',
             url: 'https://barrigarest.wcaquino.me/contas/**'
