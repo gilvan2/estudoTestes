@@ -10,7 +10,6 @@ describe('Testanado em nível funcional',()=>{
 
         buildEnv()
         cy.login('gilvan.silva@gmail.com','senhaerrada@')
-        //cy.resetApp()
     })
 
     it('Deve cadastrar uma conta',()=>{
@@ -58,7 +57,16 @@ describe('Testanado em nível funcional',()=>{
 
     })
 
-    it('não deve inserir conta com nome repetido',()=>{
+    it.only('não deve inserir conta com nome repetido',()=>{
+        //cy.acessarMenuConta()
+        cy.intercept({
+            method: 'POST',
+            url: 'https://barrigarest.wcaquino.me/contas'
+        }, { 
+            statusCode: 400,
+            body: {"error": "Já existe uma conta com esse nome!" }
+        }).as('saveContaMesmoNome')
+
         cy.acessarMenuConta()
         cy.acessarMenuConta()
         cy.inserirConta('Conta mesmo nome')
